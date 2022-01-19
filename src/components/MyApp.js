@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {List} from "./List";
+import Film from "./Film";
 import {fetchData} from "../utils/api";
 
 class MyApp extends Component {
@@ -11,22 +11,23 @@ class MyApp extends Component {
             loading: true,
             films: []
         };
+
     }
 
     componentDidMount() {
         this.loadFilms();
     }
 
-    setFilms (response) {
+    setFilms(response) {
+        console.log(response);
         this.setState({
             loading: false,
-            films:response
+            films: response
         });
     }
 
     async loadFilms() {
-           const loadedFilms= fetchData();
-            fetchData().then(response => this.setFilms(response))
+        fetchData().then(response => this.setFilms(response))
     }
 
     render() {
@@ -34,10 +35,19 @@ class MyApp extends Component {
             return (<h1>Loading....</h1>);
         } else {
             return (<React.Fragment>
-                <List films={this.state.films}/>
+                <h1>Star Wars films</h1>
+                { this.state.films.map((aFilm,index) =>
+                    <Film  key={index}
+                              onDetail={this.handleDetail}
+                              movie={aFilm}>
+                    </Film>
+                )}
+
             </React.Fragment>);
         }
     }
+
 }
+
 
 export default MyApp;
